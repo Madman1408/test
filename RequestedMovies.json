@@ -1,7 +1,7 @@
 {
   "_metadata_": {
     "streamer": "sarachuma",
-    "lastUpdated": "21.08.2026 15:57",
+    "lastUpdated": "21.08.2026 20:14",
     "isOnlineBtnVisible": true
   },
   "puf_98": [
@@ -2192,14 +2192,15 @@
       "id": 78,
       "dateRequested": "21.03.2025 10:09",
       "status": "Смотрели",
-      "ourRating": "Без оценки",
-      "cried": false,
+      "ourRating": "8",
+      "cried": true,
       "isAuction": true,
-      "isBanned": false,
-      "isTheme": false,
+      "isBanned": true,
+      "isTheme": true,
       "isWatching": false,
       "isMarvel": false,
-      "dateWatched": "19.07.2026 11:00"
+      "dateWatched": "21.08.2026 20:13",
+      "postUrl": "https://t.me/sarachuma/332"
     }
   ],
   "iFounderUNiceMood": [
