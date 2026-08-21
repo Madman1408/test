@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кинотеатр</title>
     
+    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -314,36 +315,15 @@
             background-color: var(--accent-main); border-radius: 50%; z-index: 15;
             box-shadow: 0 0 15px rgba(254, 0, 0, 0.9); border: 2px solid var(--bg-deep);
         }
-        
-        .poster-actions {
-            position: absolute; right: 8px; bottom: 8px;
-            display: flex; flex-direction: column-reverse;
-            gap: 8px; z-index: 16;
+        .card-copy-btn {
+            position: absolute; right: 8px; bottom: 8px; z-index: 16;
+            background: rgba(3, 6, 36, 0.9); border: 1px solid rgba(254, 0, 0, 0.5); color: var(--accent-main);
+            cursor: pointer; padding: 6px; border-radius: 2px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; opacity: 0; transform: scale(0.8);
         }
-        .poster-actions.shifted { bottom: 34px; }
-
-        .poster-action-btn {
-            background: rgba(3, 6, 36, 0.9);
-            border: 1px solid rgba(254, 0, 0, 0.5);
-            color: var(--accent-main);
-            cursor: pointer; padding: 6px; border-radius: 2px;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s; opacity: 0; transform: scale(0.8); text-decoration: none;
-        }
-
-        .card-view-item:hover .poster-action-btn,
-        .movie-row:hover .poster-action-btn,
-        .modal-poster-wrapper:hover .poster-action-btn,
-        .poster-action-btn:active {
-            opacity: 1; transform: scale(1);
-        }
-
-        .poster-action-btn:hover {
-            background: var(--accent-main); color: var(--bg-deep);
-            box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); border-color: var(--accent-main);
-        }
-
-        .modal-poster-wrapper { position: relative; align-self: flex-start; }
+        .card-view-item:hover .card-copy-btn { opacity: 1; transform: scale(1); }
+        .card-copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
+        .card-copy-btn.shifted { bottom: 32px; }
         
         
         .watch-online-btn {
@@ -396,6 +376,10 @@
         .modal-title { font-family: var(--font-title); font-size: 42px; font-weight: 700; margin: 0; color: #ffffff; letter-spacing: 2px; text-shadow: 2px 2px 0 var(--accent-dark), 0 0 15px var(--accent-main); flex-shrink: 1; min-width: 0; line-height: 1.1; }
         .modal-title-extras { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-top: 4px; }
         .modal-year { color: var(--text-main); font-family: var(--font-title); font-size: 28px; font-weight: 600; opacity: 0.9; } 
+
+        .modal-title-wrapper .copy-btn { opacity: 0.8; transform: scale(1); background: rgba(254, 0, 0, 0.15); border: 1px solid var(--accent-dark); color: var(--accent-main); padding: 6px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s; cursor: pointer; border-radius: 2px; }
+        .modal-title-wrapper:hover .copy-btn { opacity: 1; }
+        .modal-title-wrapper .copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 20px rgba(254, 0, 0, 0.6); border-color: var(--accent-main); }
         
         .modal-meta-wrapper { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid rgba(254, 0, 0, 0.3); padding-bottom: 15px; flex-wrap: wrap; }
         
@@ -464,8 +448,8 @@
             .movies-grid { grid-template-columns: repeat(4, 1fr); }
         }
         @media (max-width: 768px) {
-            #viewToggleBtn { display: none !important; }
-        
+			#viewToggleBtn { display: none !important; }
+		
             th:nth-child(4), td:nth-child(4) { display: none; }
             .movies-grid { grid-template-columns: repeat(2, 1fr); padding: 10px; gap: 10px; }
             .modal-body { flex-direction: column; margin-top: -60px; padding: 20px; }
@@ -480,33 +464,33 @@
             .flex-row-responsive { flex-direction: column; }
             .flex-col-half.border-right-dashed { border-right: none; border-bottom: 1px solid rgba(254, 0, 0, 0.3); }
 
-            .header {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px; 
-                padding: 20px 10px; 
-            }
+			.header {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 15px; 
+				padding: 20px 10px; 
+			}
 
-            .back-btn {
-                position: relative;
-                top: 0;
-                left: 0;
-            }
+			.back-btn {
+				position: relative;
+				top: 0;
+				left: 0;
+			}
 
-            .creator-badge {
-                position: relative;
-                top: 0;
-                right: 0;
-            }
+			.creator-badge {
+				position: relative;
+				top: 0;
+				right: 0;
+			}
 
-            .header-top h1 { 
-                font-size: 28px; 
-                margin: 5px 0 10px 0;
-            }
-            .header-top h1::before, .header-top h1::after { 
-                display: none; 
-            }
+			.header-top h1 { 
+				font-size: 28px; 
+				margin: 5px 0 10px 0;
+			}
+			.header-top h1::before, .header-top h1::after { 
+				display: none; 
+			}
 
         }
     
@@ -543,10 +527,10 @@
                     В Архивы
                 </a>
 
-                <div class="creator-badge" onclick="window.open('https://twitch.tv/MadMan1408', '_blank')">
+                <div class="creator-badge" onclick="window.open('https://twitch.tv/sarachuma', '_blank')">
                     <img src="https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png" id="sarachumaAvatar" alt="sarachuma">
                     <div class="creator-info">
-                        <span class="creator-name text-3d-effect">MadMan1408</span>
+                        <span class="creator-name text-3d-effect">sarachuma</span>
                     </div>
                 </div>
                 
@@ -603,15 +587,15 @@
                 <div class="close-btn" onclick="closeModal(true)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
                 <div class="modal-hero" id="modalHero"></div>
                 <div class="modal-body">
-                    <div class="modal-poster-wrapper">
-                        <img id="modalPoster" class="modal-poster" src="" alt="Постер">
-                        <div class="poster-actions" id="modalPosterActions" style="right: 12px; bottom: 12px;"></div>
-                    </div>
+                    <div><img id="modalPoster" class="modal-poster" src="" alt="Постер"></div>
                     <div class="modal-info-main">
                         <div class="modal-title-wrapper">
                             <h2 class="modal-title text-3d-effect" id="modalTitle">Название</h2>
                             <div class="modal-title-extras">
                                 <span class="modal-year" id="modalYear"></span>
+                                <button class="copy-btn" id="modalCopyBtn" onclick="copyMovieNameFromModal()" title="Скопировать имя">
+                                    <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                                </button>
                             </div>
                         </div>
                         <div class="modal-meta-wrapper" id="modalBadges"></div>
@@ -854,23 +838,23 @@
     }
 
     function renderView() {
-        const renderArea = document.getElementById('render-area');
-        renderArea.innerHTML = '';
+		const renderArea = document.getElementById('render-area');
+		renderArea.innerHTML = '';
     
-        if (currentViewData.length === 0) {
-            renderArea.innerHTML = '<div style="text-align: center; padding: 60px; font-size: 24px; font-family: var(--font-title); color: var(--text-muted); text-transform: uppercase;">✦ Архив пуст ✦</div>';
-            return;
-        }
+		if (currentViewData.length === 0) {
+			renderArea.innerHTML = '<div style="text-align: center; padding: 60px; font-size: 24px; font-family: var(--font-title); color: var(--text-muted); text-transform: uppercase;">✦ Архив пуст ✦</div>';
+			return;
+		}
 
-        
-        if (window.innerWidth <= 768) {
-            renderGridMode(renderArea);
-        } else {
-            
-            if (viewMode === 'list') renderTableMode(renderArea);
-            else renderGridMode(renderArea);
-        }
-    }
+		
+		if (window.innerWidth <= 768) {
+			renderGridMode(renderArea);
+		} else {
+			
+			if (viewMode === 'list') renderTableMode(renderArea);
+			else renderGridMode(renderArea);
+		}
+	}
 
     function renderTableMode(renderArea) {
         let tableHTML = `
@@ -916,8 +900,7 @@
             const cleanNick = movie.requestedBy.replace('@', '').trim();
             const tr = document.createElement('tr'); tr.className = 'movie-row'; tr.onclick = () => openModal(index); 
             
-            const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
-            const posterUrl = getSafePoster(rawPoster);
+            const posterUrl = getSafePoster(movie.poster);
             const isWatched = movie.status === "Смотрели";
             
             let statusText = '';
@@ -980,27 +963,11 @@
             const auctionHTML = movie.isAuction ? `<div class="date-badge" style="margin-top: 8px; color: var(--warm-star); border-color: var(--warm-star); background: rgba(3, 6, 36, 0.9); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;">✦ Аукцион ✦</div>` : '';
             const seasonHTML = movie.requestedSeason > 0 ? `<div class="date-badge" style="margin-top: 8px; color: #fff; border-color: var(--accent-main); font-size: 12px;">${movie.requestedSeason} сезон</div>` : '';
 
-            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="poster-action-btn" title="Пост в Telegram" onclick="event.stopPropagation()">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </a>` : '';
-
-            const copyBtnMarkup = `<button class="poster-action-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-            </button>`;
-
             tr.innerHTML = `
-                <td>
-                    <div class="poster-wrapper" style="position: relative;">
-                        <img src="${posterUrl}" onerror="handlePosterError(this)" alt="">
-                        <div class="poster-actions" style="right: 4px; bottom: 4px;">
-                            ${tgButtonMarkup}
-                            ${copyBtnMarkup}
-                        </div>
-                    </div>
-                </td>
+                <td><div class="poster-wrapper"><img src="${posterUrl}" onerror="handlePosterError(this)" alt=""></div></td>
                 <td>
                     <div class="movie-info">
-                        <div class="movie-header"><span class="movie-title">${cleanTitle}</span><div class="movie-meta-box"><span class="movie-year text-3d-effect">${movie.year || '----'}</span></div></div>
+                        <div class="movie-header"><span class="movie-title">${cleanTitle}</span><div class="movie-meta-box"><span class="movie-year text-3d-effect">${movie.year || '----'}</span><button class="copy-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать"><svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg></button></div></div>
                         <div class="badges-container">${typeLabel} ${tmdbBadge} ${ageRating} <span class="outline-badge text-3d-effect">ID №${movie.id || 0}</span></div>
                         <div class="movie-genres">${escapeHTML(movie.genres || '')}</div>
                         ${movie.tagline ? `<div class="movie-tagline">«${escapeHTML(movie.tagline)}»</div>` : ''}
@@ -1047,8 +1014,7 @@
             }
 
             const cleanNick = movie.requestedBy.replace('@', '').trim();
-            const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
-            const posterUrl = getSafePoster(rawPoster);
+            const posterUrl = getSafePoster(movie.poster);
             const isWatched = movie.status === "Смотрели";
             
             const baseTitle = movie.title || 'Безымянный';
@@ -1088,16 +1054,7 @@
 
             const hasBannedStudios = movie.studios && movie.studios.includes('🔴');
             const bannedDotMarkup = hasBannedStudios ? `<div class="banned-dot" title="Запрещенная студия!"></div>` : '';
-            
-            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="poster-action-btn" title="Пост в Telegram" onclick="event.stopPropagation()">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </a>` : '';
-
-            const copyBtnMarkup = `<button class="poster-action-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-            </button>`;
-
-            const actionsClass = hasBannedStudios ? 'poster-actions shifted' : 'poster-actions';
+            const copyBtnClass = hasBannedStudios ? 'card-copy-btn shifted' : 'card-copy-btn';
 
             let displayType = escapeHTML(movie.type || 'Фильм');
             if (displayType.toLowerCase().includes('мульт')) displayType = 'Мульт';
@@ -1113,10 +1070,9 @@
                 <div class="card-top">
                     <img src="${posterUrl}" class="card-poster" onerror="handlePosterError(this)" alt="">
                     ${bannedDotMarkup}
-                    <div class="${actionsClass}">
-                        ${tgButtonMarkup}
-                        ${copyBtnMarkup}
-                    </div>
+                    <button class="${copyBtnClass}" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название">
+                        <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                    </button>
                     <div class="card-overlay">
                         <div class="card-badges-top">
                             <div class="card-type-badge">${displayType}</div>
@@ -1258,20 +1214,9 @@
             heroEl.style.backgroundImage = `url("${fallbackBackdrop}")`;
         }
         
-        const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
         const posterEl = document.getElementById('modalPoster');
-        posterEl.src = getSafePoster(rawPoster);
+        posterEl.src = getSafePoster(movie.poster);
         posterEl.onerror = function() { handlePosterError(this); };
-        
-        const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="poster-action-btn" title="Пост в Telegram" onclick="event.stopPropagation()">
-            <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-        </a>` : '';
-
-        const copyBtnMarkup = `<button class="poster-action-btn" id="modalCopyBtn" onclick="copyMovieNameFromModal()" title="Скопировать название">
-            <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-        </button>`;
-
-        document.getElementById('modalPosterActions').innerHTML = tgButtonMarkup + copyBtnMarkup;
         
         const baseTitle = movie.title || 'Безымянный';
         const displayTitleText = movie.requestedSeason > 0 ? `${baseTitle} (${movie.requestedSeason} сезон)` : baseTitle;
