@@ -1267,19 +1267,26 @@
         if (movie.tmdbRating) badgesHtml += `<span class="tmdb-badge">TMDB ${movie.tmdbRating}</span>`;
         if (movie.ageRating && movie.ageRating !== "Нет данных") badgesHtml += `<span class="outline-badge">${movie.ageRating}</span>`;
         badgesHtml += `<span class="outline-badge">ID №${movie.id || 0}</span>`;
-        
-        if (movie.kinopoiskId && isOnlineBtnVisible) {
+        		
+		
+		
+		if (movie.kinopoiskId && isOnlineBtnVisible) {
             badgesHtml += `<a href="https://kinomix.web.app/movie/${movie.kinopoiskId}" target="_blank" class="watch-online-btn" style="margin-left: 4px;" onclick="event.stopPropagation();">Смотреть Онлайн</a>`;
         }
         
         const telegramLink = movie.postUrl;
         if (telegramLink) {
+            // ДОБАВЛЕН невидимый блок на 100% ширины, чтобы принудительно перенести всё на новую строку
+            badgesHtml += `<div style="flex-basis: 100%; height: 0;"></div>`;
+            
+            // УБРАН style="... margin-left: 4px;", чтобы кнопка выровнялась ровно по левому краю под фильмом
             badgesHtml += `
-            <a href="${escapeHTML(telegramLink)}" target="_blank" class="outline-badge tg-modal-badge" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6); margin-left: 4px;">
+            <a href="${escapeHTML(telegramLink)}" target="_blank" class="outline-badge tg-modal-badge" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6);">
                 <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 ТГ ПОСТ
             </a>`;
         }
+		
         
         document.getElementById('modalBadges').innerHTML = badgesHtml;
         
