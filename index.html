@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кинотеатр</title>
     
-    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -315,16 +314,21 @@
             background-color: var(--accent-main); border-radius: 50%; z-index: 15;
             box-shadow: 0 0 15px rgba(254, 0, 0, 0.9); border: 2px solid var(--bg-deep);
         }
-        .card-copy-btn {
+        
+        .poster-actions {
             position: absolute; right: 8px; bottom: 8px; z-index: 16;
+            display: flex; flex-direction: column-reverse; gap: 8px;
+        }
+        .poster-actions.shifted { bottom: 32px; }
+
+        .poster-action-btn {
             background: rgba(3, 6, 36, 0.9); border: 1px solid rgba(254, 0, 0, 0.5); color: var(--accent-main);
             cursor: pointer; padding: 6px; border-radius: 2px; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s; opacity: 0; transform: scale(0.8);
         }
-        .card-view-item:hover .card-copy-btn { opacity: 1; transform: scale(1); }
-        .card-copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
-        .card-copy-btn.shifted { bottom: 32px; }
-        
+        .card-view-item:hover .poster-action-btn { opacity: 1; transform: scale(1); }
+        .poster-action-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
+
         
         .watch-online-btn {
             background: var(--accent-main); color: #ffffff; padding: 4px 12px; font-size: 13px; font-weight: 900;
@@ -376,7 +380,7 @@
         .modal-title { font-family: var(--font-title); font-size: 42px; font-weight: 700; margin: 0; color: #ffffff; letter-spacing: 2px; text-shadow: 2px 2px 0 var(--accent-dark), 0 0 15px var(--accent-main); flex-shrink: 1; min-width: 0; line-height: 1.1; }
         .modal-title-extras { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-top: 4px; }
         .modal-year { color: var(--text-main); font-family: var(--font-title); font-size: 28px; font-weight: 600; opacity: 0.9; } 
-
+        
         .modal-title-wrapper .copy-btn { opacity: 0.8; transform: scale(1); background: rgba(254, 0, 0, 0.15); border: 1px solid var(--accent-dark); color: var(--accent-main); padding: 6px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s; cursor: pointer; border-radius: 2px; }
         .modal-title-wrapper:hover .copy-btn { opacity: 1; }
         .modal-title-wrapper .copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 20px rgba(254, 0, 0, 0.6); border-color: var(--accent-main); }
@@ -527,10 +531,10 @@
                     В Архивы
                 </a>
 
-                <div class="creator-badge" onclick="window.open('https://twitch.tv/sarachuma', '_blank')">
+                <div class="creator-badge" onclick="window.open('https://twitch.tv/MadMan1408', '_blank')">
                     <img src="https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png" id="sarachumaAvatar" alt="sarachuma">
                     <div class="creator-info">
-                        <span class="creator-name text-3d-effect">sarachuma</span>
+                        <span class="creator-name text-3d-effect">MadMan1408</span>
                     </div>
                 </div>
                 
@@ -838,23 +842,23 @@
     }
 
     function renderView() {
-		const renderArea = document.getElementById('render-area');
-		renderArea.innerHTML = '';
+        const renderArea = document.getElementById('render-area');
+        renderArea.innerHTML = '';
     
-		if (currentViewData.length === 0) {
-			renderArea.innerHTML = '<div style="text-align: center; padding: 60px; font-size: 24px; font-family: var(--font-title); color: var(--text-muted); text-transform: uppercase;">✦ Архив пуст ✦</div>';
-			return;
-		}
+        if (currentViewData.length === 0) {
+            renderArea.innerHTML = '<div style="text-align: center; padding: 60px; font-size: 24px; font-family: var(--font-title); color: var(--text-muted); text-transform: uppercase;">✦ Архив пуст ✦</div>';
+            return;
+        }
 
-		
-		if (window.innerWidth <= 768) {
-			renderGridMode(renderArea);
-		} else {
-			
-			if (viewMode === 'list') renderTableMode(renderArea);
-			else renderGridMode(renderArea);
-		}
-	}
+        
+        if (window.innerWidth <= 768) {
+            renderGridMode(renderArea);
+        } else {
+            
+            if (viewMode === 'list') renderTableMode(renderArea);
+            else renderGridMode(renderArea);
+        }
+    }
 
     function renderTableMode(renderArea) {
         let tableHTML = `
@@ -900,7 +904,8 @@
             const cleanNick = movie.requestedBy.replace('@', '').trim();
             const tr = document.createElement('tr'); tr.className = 'movie-row'; tr.onclick = () => openModal(index); 
             
-            const posterUrl = getSafePoster(movie.poster);
+            const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
+            const posterUrl = getSafePoster(rawPoster);
             const isWatched = movie.status === "Смотрели";
             
             let statusText = '';
@@ -1014,7 +1019,8 @@
             }
 
             const cleanNick = movie.requestedBy.replace('@', '').trim();
-            const posterUrl = getSafePoster(movie.poster);
+            const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
+            const posterUrl = getSafePoster(rawPoster);
             const isWatched = movie.status === "Смотрели";
             
             const baseTitle = movie.title || 'Безымянный';
@@ -1054,7 +1060,14 @@
 
             const hasBannedStudios = movie.studios && movie.studios.includes('🔴');
             const bannedDotMarkup = hasBannedStudios ? `<div class="banned-dot" title="Запрещенная студия!"></div>` : '';
-            const copyBtnClass = hasBannedStudios ? 'card-copy-btn shifted' : 'card-copy-btn';
+            
+            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="card-copy-btn" title="Пост в Telegram" onclick="event.stopPropagation()" style="bottom: ${hasBannedStudios ? '32px' : '8px'};">
+                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </a>` : '';
+
+            const copyBtnMarkup = `<button class="card-copy-btn ${hasBannedStudios ? 'shifted' : ''}" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название" style="bottom: ${movie.postUrl ? (hasBannedStudios ? '66px' : '42px') : (hasBannedStudios ? '32px' : '8px')};">
+                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            </button>`;
 
             let displayType = escapeHTML(movie.type || 'Фильм');
             if (displayType.toLowerCase().includes('мульт')) displayType = 'Мульт';
@@ -1070,9 +1083,8 @@
                 <div class="card-top">
                     <img src="${posterUrl}" class="card-poster" onerror="handlePosterError(this)" alt="">
                     ${bannedDotMarkup}
-                    <button class="${copyBtnClass}" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название">
-                        <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-                    </button>
+                    ${copyBtnMarkup}
+                    ${tgButtonMarkup}
                     <div class="card-overlay">
                         <div class="card-badges-top">
                             <div class="card-type-badge">${displayType}</div>
@@ -1214,8 +1226,9 @@
             heroEl.style.backgroundImage = `url("${fallbackBackdrop}")`;
         }
         
+        const rawPoster = movie.altPoster && movie.altPoster.trim() !== "" ? movie.altPoster : movie.poster;
         const posterEl = document.getElementById('modalPoster');
-        posterEl.src = getSafePoster(movie.poster);
+        posterEl.src = getSafePoster(rawPoster);
         posterEl.onerror = function() { handlePosterError(this); };
         
         const baseTitle = movie.title || 'Безымянный';
