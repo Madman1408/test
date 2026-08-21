@@ -309,16 +309,30 @@
         }
 
         
-        .banned-dot {
-            position: absolute; right: 13px; bottom: 10px; width: 14px; height: 14px;
-            background-color: var(--accent-main); border-radius: 50%; z-index: 15;
-            box-shadow: 0 0 15px rgba(254, 0, 0, 0.9); border: 2px solid var(--bg-deep);
+        /* Стили для новых иконок на постере (Плиточный режим) */
+        .card-action-stack {
+            position: absolute; right: 8px; bottom: 8px;
+            display: flex; flex-direction: column; gap: 6px;
+            z-index: 16; align-items: center;
         }
+        .banned-dot {
+            width: 14px; height: 14px;
+            background-color: var(--accent-main); border-radius: 50%; box-shadow: 0 0 15px rgba(254, 0, 0, 0.9);
+            border: 2px solid var(--bg-deep); margin-bottom: 2px;
+        }
+        .card-tg-btn {
+            background: rgba(41, 128, 185, 0.9); border: 1px solid rgba(41, 128, 185, 0.6); color: #ffffff;
+            border-radius: 2px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            text-decoration: none; width: 30px; height: 30px; box-sizing: border-box;
+        }
+        .card-tg-btn:hover { background: rgba(41, 128, 185, 1); box-shadow: 0 0 15px rgba(41, 128, 185, 0.8); transform: scale(1.05); }
+
         .card-copy-btn {
-            position: absolute; right: 8px; bottom: 8px; z-index: 16;
             background: rgba(3, 6, 36, 0.9); border: 1px solid rgba(254, 0, 0, 0.5); color: var(--accent-main);
-            cursor: pointer; padding: 6px; border-radius: 2px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s; opacity: 0; transform: scale(0.8);
+            width: 30px; height: 30px; box-sizing: border-box; padding: 0;
         }
         .card-view-item:hover .card-copy-btn { opacity: 1; transform: scale(1); }
         .card-copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
@@ -380,6 +394,8 @@
         .modal-title-wrapper .copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 20px rgba(254, 0, 0, 0.6); border-color: var(--accent-main); }
         
         .modal-meta-wrapper { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid rgba(254, 0, 0, 0.3); padding-bottom: 15px; flex-wrap: wrap; }
+        .tg-modal-badge { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; cursor: pointer; transition: all 0.3s ease; color: #ffffff !important; }
+        .tg-modal-badge:hover { background: var(--accent-main); color: #ffffff !important; box-shadow: 0 0 15px rgba(254, 0, 0, 0.5); }
         
         .modal-overview { color: var(--text-main); font-family: var(--font-text); font-size: 16px; line-height: 1.7; margin-bottom: 30px; }
 
@@ -1052,20 +1068,25 @@
 
             let avatarMarkup = movie.userAvatar && movie.userAvatar.startsWith('http') ? `<img src="${movie.userAvatar}" class="card-user-avatar" alt="">` : `<div class="card-user-avatar" style="background-color: var(--bg-deep); color: var(--text-main);">${getInitials(cleanNick)}</div>`;
 
+            let rightStackHTML = '<div class="card-action-stack">';
+            
             const hasBannedStudios = movie.studios && movie.studios.includes('🔴');
-            const bannedDotMarkup = hasBannedStudios ? `<div class="banned-dot" title="Запрещенная студия!"></div>` : '';
-            
-            let baseBottom = hasBannedStudios ? 32 : 8;
-            
-            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="card-copy-btn" title="Пост в Telegram" onclick="event.stopPropagation()" style="bottom: ${baseBottom}px;">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-            </a>` : '';
+            if (hasBannedStudios) {
+                rightStackHTML += `<div class="banned-dot" title="Запрещенная студия!" style="position: relative; right: auto; bottom: auto; align-self: flex-end; margin-right: 8px;"></div>`;
+            }
 
-            let copyBtnBottom = movie.postUrl ? baseBottom + 34 : baseBottom;
-
-            const copyBtnMarkup = `<button class="card-copy-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название" style="bottom: ${copyBtnBottom}px;">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            rightStackHTML += `<button class="card-copy-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название">
+                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
             </button>`;
+
+            const telegramLink = movie.postUrl;
+            if (telegramLink) {
+                rightStackHTML += `<a href="${escapeHTML(telegramLink)}" target="_blank" class="card-tg-btn" title="Telegram Пост" onclick="event.stopPropagation();">
+                    <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </a>`;
+            }
+            
+            rightStackHTML += '</div>';
 
             let displayType = escapeHTML(movie.type || 'Фильм');
             if (displayType.toLowerCase().includes('мульт')) displayType = 'Мульт';
@@ -1080,9 +1101,7 @@
             card.innerHTML = `
                 <div class="card-top">
                     <img src="${posterUrl}" class="card-poster" onerror="handlePosterError(this)" alt="">
-                    ${bannedDotMarkup}
-                    ${copyBtnMarkup}
-                    ${tgButtonMarkup}
+                    ${rightStackHTML}
                     <div class="card-overlay">
                         <div class="card-badges-top">
                             <div class="card-type-badge">${displayType}</div>
@@ -1143,7 +1162,7 @@
                     titleEl.style.display = '-webkit-box'; 
                     titleEl.style.webkitLineClamp = '2'; 
                     titleEl.style.webkitBoxOrient = 'vertical'; 
-                    titleEl.style.overflow = 'hidden'; // ВАЖНО: Добавлено для корректной работы скрытия хвоста
+                    titleEl.style.overflow = 'hidden'; 
                 } else {
                     titleEl.style.whiteSpace = 'nowrap';
                     titleEl.style.textOverflow = 'ellipsis';
@@ -1199,7 +1218,7 @@
 
     window.addEventListener('resize', () => {
 		autoResizeTitles();
-		renderView(); // Перерисовываем вид при изменении размера окна
+		renderView(); 
 	});
 
     function openModal(index) {
@@ -1251,6 +1270,15 @@
         
         if (movie.kinopoiskId && isOnlineBtnVisible) {
             badgesHtml += `<a href="https://kinomix.web.app/movie/${movie.kinopoiskId}" target="_blank" class="watch-online-btn" style="margin-left: 4px;" onclick="event.stopPropagation();">Смотреть Онлайн</a>`;
+        }
+        
+        const telegramLink = movie.postUrl;
+        if (telegramLink) {
+            badgesHtml += `
+            <a href="${escapeHTML(telegramLink)}" target="_blank" class="outline-badge tg-modal-badge" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6); margin-left: 4px;">
+                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                ТГ ПОСТ
+            </a>`;
         }
         
         document.getElementById('modalBadges').innerHTML = badgesHtml;
