@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кинотеатр</title>
     
+    
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -217,6 +218,10 @@
         .time-box.episodes { font-size: 11px; flex-direction: column; gap: 3px; align-items: center; text-align: center; background: rgba(12, 30, 91, 0.6); border-color: rgba(254, 0, 0, 0.2); padding: 6px 12px; margin-top: 0; text-transform: uppercase; }
 
         .badge-status { font-size: 12px; font-weight: 900; text-align: center; display: inline-flex; justify-content: center; align-items: center; text-transform: uppercase; letter-spacing: 2px; font-family: var(--font-title); color: var(--bg-deep); border-radius: 2px; padding: 4px 12px; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(254, 0, 0, 0.5); min-width: 85px; }
+
+        /* СТИЛЬ КНОПКИ ТГ ДЛЯ СПИСКА */
+        .steam-link-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: rgba(41, 128, 185, 0.3); color: #ffffff !important; border: 1px solid rgba(41, 128, 185, 0.6); padding: 4px 10px; border-radius: 2px; text-decoration: none; font-family: var(--font-title); font-size: 11px; font-weight: 700; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 1px; width: fit-content; box-sizing: border-box; margin-top: 4px;}
+        .steam-link-btn:hover { background: rgba(41, 128, 185, 0.8); color: #ffffff !important; box-shadow: 0 0 15px rgba(41, 128, 185, 0.6); transform: translateY(-1px); }
 
         .crew-section { display: flex; align-items: center; margin-top: 15px; gap: 12px; }
         .avatar-container { position: relative; z-index: 1; transition: transform 0.3s ease; } 
@@ -541,10 +546,10 @@
                     В Архивы
                 </a>
 
-                <div class="creator-badge" onclick="window.open('https://twitch.tv/sarachuma', '_blank')">
+                <div class="creator-badge" onclick="window.open('https://twitch.tv/MadMan1408', '_blank')">
                     <img src="https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png" id="sarachumaAvatar" alt="sarachuma">
                     <div class="creator-info">
-                        <span class="creator-name text-3d-effect">sarachuma</span>
+                        <span class="creator-name text-3d-effect">MadMan1408</span>
                     </div>
                 </div>
                 
@@ -930,19 +935,25 @@
             let watchedDetails = '';
             if (isWatched && movie.dateWatched) {
                 watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content;"><span class="text-3d-effect">${movie.dateWatched.split(' ')[0]}</span></div>`;
-                if (movie.ourRating && movie.ourRating !== "Без оценки") {
-                    const parsedRating = parseFloat(movie.ourRating);
-                    if (parsedRating === 1000) watchedDetails += `<div class="date-badge legendary-badge" style="margin-top: 0; width: fit-content; flex-direction: column; gap: 2px; padding: 4px 14px; line-height: 1.1;"><span style="font-size: 9px; text-transform: uppercase; opacity: 0.9;">Оценка:</span><span style="font-size: 14px; font-family: var(--font-title);">1000</span></div>`;
-                    else { const rColor = getRatingColor(movie.ourRating); watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content; color: ${rColor}; border-color: ${rColor}; box-shadow: 0 0 10px rgba(0,0,0,0.5);">Оценка: ${movie.ourRating}</div>`; }
-                }
-                if (movie.cried) watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content; font-family: var(--font-text); font-size: 11px; color: var(--text-main); border-color: var(--accent-main);"><svg class="icon-3d-effect" width="18" height="18" viewBox="0 0 24 24" fill="var(--text-main)" stroke="var(--text-main)" stroke-width="1"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg> <span class="text-3d-effect">Слёзы</span></div>`;
             }
+
+            const telegramLink = movie.postUrl;
+            if (telegramLink) {
+                watchedDetails += `<a href="${escapeHTML(telegramLink)}" target="_blank" class="steam-link-btn" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6); margin-top: 4px;" onclick="event.stopPropagation();"><svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> ТГ ПОСТ </a>`;
+            }
+
+            if (isWatched && movie.ourRating && movie.ourRating !== "Без оценки") {
+                const parsedRating = parseFloat(movie.ourRating);
+                if (parsedRating === 1000) watchedDetails += `<div class="date-badge legendary-badge" style="margin-top: 4px; width: fit-content; flex-direction: column; gap: 2px; padding: 4px 14px; line-height: 1.1;"><span style="font-size: 9px; text-transform: uppercase; opacity: 0.9;">Оценка:</span><span style="font-size: 14px; font-family: var(--font-title);">1000</span></div>`;
+                else { const rColor = getRatingColor(movie.ourRating); watchedDetails += `<div class="date-badge" style="margin-top: 4px; width: fit-content; color: ${rColor}; border-color: ${rColor}; box-shadow: 0 0 10px rgba(0,0,0,0.5);">Оценка: ${movie.ourRating}</div>`; }
+            }
+            if (isWatched && movie.cried) watchedDetails += `<div class="date-badge" style="margin-top: 4px; width: fit-content; font-family: var(--font-text); font-size: 11px; color: var(--text-main); border-color: var(--accent-main);"><svg class="icon-3d-effect" width="18" height="18" viewBox="0 0 24 24" fill="var(--text-main)" stroke="var(--text-main)" stroke-width="1"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg> <span class="text-3d-effect">Слёзы</span></div>`;
             
-            if (movie.isTheme) watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content; background: rgba(224, 86, 253, 0.8); color: #ffffff; border: 1px solid #e056fd; box-shadow: 0 0 10px rgba(224, 86, 253, 0.4); text-transform: uppercase; font-weight: 900; letter-spacing: 1px; padding: 7px 6px; font-size: 11px;">Тем. Неделя</div>`;
-            if (movie.isMarvel) watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content; background: #e62429; color: #ffffff; border: 1px solid #e62429; box-shadow: 0 0 10px rgba(230, 36, 41, 0.4); text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">MARVEL</div>`;
-            if (movie.isBanned) watchedDetails += `<div class="date-badge" style="margin-top: 0; width: fit-content; background: #e62429; color: #ffffff; border: 1px solid #e62429; box-shadow: 0 0 10px rgba(230, 36, 41, 0.4);">🚫 БАН</div>`;
+            if (movie.isTheme) watchedDetails += `<div class="date-badge" style="margin-top: 4px; width: fit-content; background: rgba(224, 86, 253, 0.8); color: #ffffff; border: 1px solid #e056fd; box-shadow: 0 0 10px rgba(224, 86, 253, 0.4); text-transform: uppercase; font-weight: 900; letter-spacing: 1px; padding: 7px 6px; font-size: 11px;">Тем. Неделя</div>`;
+            if (movie.isMarvel) watchedDetails += `<div class="date-badge" style="margin-top: 4px; width: fit-content; background: #e62429; color: #ffffff; border: 1px solid #e62429; box-shadow: 0 0 10px rgba(230, 36, 41, 0.4); text-transform: uppercase; font-weight: 900; letter-spacing: 1px;">MARVEL</div>`;
+            if (movie.isBanned) watchedDetails += `<div class="date-badge" style="margin-top: 4px; width: fit-content; background: #e62429; color: #ffffff; border: 1px solid #e62429; box-shadow: 0 0 10px rgba(230, 36, 41, 0.4);">🚫 БАН</div>`;
             
-            const watchedDateHTML = watchedDetails ? `<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 8px;">${watchedDetails}</div>` : '';
+            const watchedDateHTML = watchedDetails ? `<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 8px;">${watchedDetails}</div>` : '';
 
             const tmdbBadge = movie.tmdbRating ? `<span class="tmdb-badge text-3d-effect">TMDB ${movie.tmdbRating}</span>` : '';
             const ageRating = (movie.ageRating && movie.ageRating !== "Нет данных") ? `<span class="outline-badge text-3d-effect">${movie.ageRating}</span>` : '';
@@ -1082,7 +1093,7 @@
             const telegramLink = movie.postUrl;
             if (telegramLink) {
                 rightStackHTML += `<a href="${escapeHTML(telegramLink)}" target="_blank" class="card-tg-btn" title="Telegram Пост" onclick="event.stopPropagation();">
-                    <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </a>`;
             }
             
@@ -1267,26 +1278,21 @@
         if (movie.tmdbRating) badgesHtml += `<span class="tmdb-badge">TMDB ${movie.tmdbRating}</span>`;
         if (movie.ageRating && movie.ageRating !== "Нет данных") badgesHtml += `<span class="outline-badge">${movie.ageRating}</span>`;
         badgesHtml += `<span class="outline-badge">ID №${movie.id || 0}</span>`;
-        		
-		
-		
-		if (movie.kinopoiskId && isOnlineBtnVisible) {
-            badgesHtml += `<a href="https://kinomix.web.app/movie/${movie.kinopoiskId}" target="_blank" class="watch-online-btn" style="margin-left: 4px;" onclick="event.stopPropagation();">Смотреть Онлайн</a>`;
+        
+        let nextLineBadges = '';
+        const telegramLink = movie.postUrl;
+        
+        if (telegramLink) {
+            nextLineBadges += `<a href="${escapeHTML(telegramLink)}" target="_blank" class="outline-badge tg-modal-badge" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6);"><svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg> ТГ ПОСТ </a>`;
         }
         
-        const telegramLink = movie.postUrl;
-        if (telegramLink) {
-            // ДОБАВЛЕН невидимый блок на 100% ширины, чтобы принудительно перенести всё на новую строку
-            badgesHtml += `<div style="flex-basis: 100%; height: 0;"></div>`;
-            
-            // УБРАН style="... margin-left: 4px;", чтобы кнопка выровнялась ровно по левому краю под фильмом
-            badgesHtml += `
-            <a href="${escapeHTML(telegramLink)}" target="_blank" class="outline-badge tg-modal-badge" style="background: rgba(41, 128, 185, 0.3); border-color: rgba(41, 128, 185, 0.6);">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                ТГ ПОСТ
-            </a>`;
+        if (movie.kinopoiskId && isOnlineBtnVisible) {
+            nextLineBadges += `<a href="https://kinomix.web.app/movie/${movie.kinopoiskId}" target="_blank" class="watch-online-btn" style="${telegramLink ? 'margin-left: 4px;' : ''}" onclick="event.stopPropagation();">Смотреть Онлайн</a>`;
         }
-		
+
+        if (nextLineBadges !== '') {
+            badgesHtml += `<div style="flex-basis: 100%; height: 0; margin: 2px 0;"></div>` + nextLineBadges;
+        }
         
         document.getElementById('modalBadges').innerHTML = badgesHtml;
         
