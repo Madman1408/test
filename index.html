@@ -314,21 +314,15 @@
             background-color: var(--accent-main); border-radius: 50%; z-index: 15;
             box-shadow: 0 0 15px rgba(254, 0, 0, 0.9); border: 2px solid var(--bg-deep);
         }
-        
-        .poster-actions {
+        .card-copy-btn {
             position: absolute; right: 8px; bottom: 8px; z-index: 16;
-            display: flex; flex-direction: column-reverse; gap: 8px;
-        }
-        .poster-actions.shifted { bottom: 32px; }
-
-        .poster-action-btn {
             background: rgba(3, 6, 36, 0.9); border: 1px solid rgba(254, 0, 0, 0.5); color: var(--accent-main);
             cursor: pointer; padding: 6px; border-radius: 2px; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s; opacity: 0; transform: scale(0.8);
         }
-        .card-view-item:hover .poster-action-btn { opacity: 1; transform: scale(1); }
-        .poster-action-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
-
+        .card-view-item:hover .card-copy-btn { opacity: 1; transform: scale(1); }
+        .card-copy-btn:hover { background: var(--accent-main); color: var(--bg-deep); box-shadow: 0 0 15px rgba(254, 0, 0, 0.6); }
+        
         
         .watch-online-btn {
             background: var(--accent-main); color: #ffffff; padding: 4px 12px; font-size: 13px; font-weight: 900;
@@ -531,10 +525,10 @@
                     В Архивы
                 </a>
 
-                <div class="creator-badge" onclick="window.open('https://twitch.tv/MadMan1408', '_blank')">
+                <div class="creator-badge" onclick="window.open('https://twitch.tv/sarachuma', '_blank')">
                     <img src="https://static-cdn.jtvnw.net/user-default-pictures-uv/41780b5a-def8-11e9-94d9-784f43822e80-profile_image-70x70.png" id="sarachumaAvatar" alt="sarachuma">
                     <div class="creator-info">
-                        <span class="creator-name text-3d-effect">MadMan1408</span>
+                        <span class="creator-name text-3d-effect">sarachuma</span>
                     </div>
                 </div>
                 
@@ -1061,11 +1055,15 @@
             const hasBannedStudios = movie.studios && movie.studios.includes('🔴');
             const bannedDotMarkup = hasBannedStudios ? `<div class="banned-dot" title="Запрещенная студия!"></div>` : '';
             
-            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="card-copy-btn" title="Пост в Telegram" onclick="event.stopPropagation()" style="bottom: ${hasBannedStudios ? '32px' : '8px'};">
-                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            let baseBottom = hasBannedStudios ? 32 : 8;
+            
+            const tgButtonMarkup = movie.postUrl ? `<a href="${movie.postUrl}" target="_blank" class="card-copy-btn" title="Пост в Telegram" onclick="event.stopPropagation()" style="bottom: ${baseBottom}px;">
+                <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </a>` : '';
 
-            const copyBtnMarkup = `<button class="card-copy-btn ${hasBannedStudios ? 'shifted' : ''}" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название" style="bottom: ${movie.postUrl ? (hasBannedStudios ? '66px' : '42px') : (hasBannedStudios ? '32px' : '8px')};">
+            let copyBtnBottom = movie.postUrl ? baseBottom + 34 : baseBottom;
+
+            const copyBtnMarkup = `<button class="card-copy-btn" onclick="copyMovieNameFromTable(event, '${safeTitleForCopy}', '${movie.year || ''}', this)" title="Скопировать название" style="bottom: ${copyBtnBottom}px;">
                 <svg class="icon-3d-effect" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
             </button>`;
 
