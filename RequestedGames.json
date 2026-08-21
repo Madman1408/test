@@ -92,7 +92,7 @@
       "isAuction": false,
       "difficulty": "Легкая",
       "dateWatched": "23.07.2026",
-      "tgPost": "https://t.me/sarachuma/1302",
+      "postUrl": "https://t.me/sarachuma/1302",
       "datePriceUpdated": "20.08.2026"
     },
     {
@@ -246,7 +246,7 @@
       "isAuction": false,
       "difficulty": "Сложная",
       "dateWatched": "01.02.2026",
-      "tgPost": "https://t.me/sarachuma/937",
+      "postUrl": "https://t.me/sarachuma/937",
       "datePriceUpdated": "20.08.2026"
     },
     {
